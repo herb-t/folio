@@ -1,25 +1,67 @@
 {
   "posts": [
     {
-      "title": "The Photo That Changed Everything",
+      "title": "YouTube Rewind 2016",
       "slug": "seventh-post",
-      "img": "images/post7.jpeg",
-      "img_alt": "The seventh post image",
-      "img_placeholder": "data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAeAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAAQCwsLDAsQDAwQFw8NDxcbFBAQFBsfFxcXFxcfHhcaGhoaFx4eIyUnJSMeLy8zMy8vQEBAQEBAQEBAQEBAQEBAAREPDxETERUSEhUUERQRFBoUFhYUGiYaGhwaGiYwIx4eHh4jMCsuJycnLis1NTAwNTVAQD9AQEBAQEBAQEBAQED/wAARCAAFAAkDASIAAhEBAxEB/8QAVwABAQAAAAAAAAAAAAAAAAAAAAQBAQAAAAAAAAAAAAAAAAAAAAMQAAEDBAMBAAAAAAAAAAAAAAEAERIhMaECYQMjBBEBAQAAAAAAAAAAAAAAAAAAAEH/2gAMAwEAAhEDEQA/ALvkjDWA1HW2ty5m1bgVwrvTnCIiNX//2Q=="
+      "img": "images/thumbnails/logo-rewind-16.png",
+      "img_alt": "YouTube Rewind Logo",
+      "img_placeholder": ""
     },
     {
-      "title": "Ringing the Changes at Vantage",
+      "title": "Artifact",
       "slug": "eighth-post",
-      "img": "images/post8.jpeg",
-      "img_alt": "The fifth post image",
-      "img_placeholder": "data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAeAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAAQCwsLDAsQDAwQFw8NDxcbFBAQFBsfFxcXFxcfHhcaGhoaFx4eIyUnJSMeLy8zMy8vQEBAQEBAQEBAQEBAQEBAAREPDxETERUSEhUUERQRFBoUFhYUGiYaGhwaGiYwIx4eHh4jMCsuJycnLis1NTAwNTVAQD9AQEBAQEBAQEBAQED/wAARCAAFAAkDASIAAhEBAxEB/8QAYAABAQAAAAAAAAAAAAAAAAAAAAQBAQEAAAAAAAAAAAAAAAAAAAIDEAAABAMJAAAAAAAAAAAAAAAAAREiEgMEMVECQlKi0gUWEQACAwEAAAAAAAAAAAAAAAAAQTGBQ/H/2gAMAwEAAhEDEQA/AKa31hyaWEppOdaeJUzQo1LxGvc6dx8QASWs30bzP//Z"
+      "img": "images/thumbnails/memory.png",
+      "img_alt": "Artifact Holiday Memory",
+      "img_placeholder": ""
     },
     {
-      "title": "How To Run a User-Centred Photoshoot",
+      "title": "A Touch Of Sweetness",
       "slug": "ninth-post",
-      "img": "images/post9.jpeg",
-      "img_alt": "The sixth post image",
-      "img_placeholder": "data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAeAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAAQCwsLDAsQDAwQFw8NDxcbFBAQFBsfFxcXFxcfHhcaGhoaFx4eIyUnJSMeLy8zMy8vQEBAQEBAQEBAQEBAQEBAAREPDxETERUSEhUUERQRFBoUFhYUGiYaGhwaGiYwIx4eHh4jMCsuJycnLis1NTAwNTVAQD9AQEBAQEBAQEBAQED/wAARCAAFAAkDASIAAhEBAxEB/8QAYgABAQEAAAAAAAAAAAAAAAAAAAQFAQEBAAAAAAAAAAAAAAAAAAAEBRAAAAUCBwAAAAAAAAAAAAAAAAERAhJBA3GRwTJS4hMRAAIABwAAAAAAAAAAAAAAAADwATFRcYEy0v/aAAwDAQACEQMRAD8A1GufAi82mabp1whqJFvcbefUAD+nBOpLSLc//9k="
+      "img": "images/thumbnails/logo-ats.png",
+      "img_alt": "A Touch Of Sweetness",
+      "img_placeholder": ""
+    },
+    {
+      "title": "HTML5 Banner Ads",
+      "slug": "seventh-post",
+      "img": "images/thumbnails/badge.png",
+      "img_alt": "Banner adds",
+      "img_placeholder": ""
+    },
+    {
+      "title": "Animals Around The World",
+      "slug": "eighth-post",
+      "img": "images/thumbnails/logo-kaiya.png",
+      "img_alt": "Animals Around The World",
+      "img_placeholder": ""
+    },
+    {
+      "title": "YouTube Creatorhub",
+      "slug": "ninth-post",
+      "img": "images/thumbnails/logo-creator.png",
+      "img_alt": "A Touch Of Sweetness",
+      "img_placeholder": ""
+    },
+    {
+      "title": "Kraft Star Wars",
+      "slug": "seventh-post",
+      "img": "images/thumbnails/logo-sw.png",
+      "img_alt": "Kraft Star Wars",
+      "img_placeholder": ""
+    },
+    {
+      "title": "Animals Around The World",
+      "slug": "eighth-post",
+      "img": "images/thumbnails/logo-kaiya.png",
+      "img_alt": "Animals Around The World",
+      "img_placeholder": ""
+    },
+    {
+      "title": "YouTube Creatorhub",
+      "slug": "ninth-post",
+      "img": "images/thumbnails/logo-creator.png",
+      "img_alt": "A Touch Of Sweetness",
+      "img_placeholder": ""
     }
   ]
 }

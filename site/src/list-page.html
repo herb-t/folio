@@ -24,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
 
-      .post {
+      /* .post {
         position: relative;
         margin-bottom: 100px;
         display: inline-block;
@@ -41,6 +41,103 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       p {
         font: 400 18px/33.18px "Open Sans", sans-serif;
       }
+
+      :host {
+        display: block;
+        margin: 20px 0;
+      } */
+
+      .works-list {
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      a {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        text-decoration: none;
+        -ms-flex: 1 1 100%;
+        -webkit-flex: 1 1 100%;
+        flex: 1 1 100%;
+        -webkit-flex-basis: 100%;
+        flex-basis: 100%;
+      }
+      iron-image {
+        -webkit-transition: opacity 0.3s ease-in-out;
+           -moz-transition: opacity 0.3s ease-in-out;
+            -ms-transition: opacity 0.3s ease-in-out;
+             -o-transition: opacity 0.3s ease-in-out;
+                transition: opacity 0.3s ease-in-out;
+
+      }
+      a:hover > figure iron-image {
+        opacity: 0.15;
+      }
+      a:hover > figure span {
+        opacity: 1;
+      }
+      figure {
+        padding: 0;
+        margin: 0;
+        position: relative;
+      }
+      figure img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+      figure iron-image {
+        --iron-image-width: 100%;
+      }
+      figcaption {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        z-index: 1;
+        -webkit-transform: translate(-50%, -50%);
+           -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+             -o-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+      }
+      span {
+        font: 700 18px/32px 'Open Sans', sans-serif;
+        color: black;
+        opacity: 0;
+        width: 100%;
+        letter-spacing: 1px;
+        -webkit-transition: opacity 0.3s ease-in-out;
+           -moz-transition: opacity 0.3s ease-in-out;
+            -ms-transition: opacity 0.3s ease-in-out;
+             -o-transition: opacity 0.3s ease-in-out;
+                transition: opacity 0.3s ease-in-out;
+      }
+
+      @media (min-width: 600px) {
+        a {
+          -ms-flex: 1 1 50%;
+          -webkit-flex: 1 1 50%;
+          flex: 1 1 50%;
+          -webkit-flex-basis: 50%;
+          flex-basis: 50%;
+        }
+      }
+
+      @media (min-width: 900px) {
+        a {
+          -ms-flex: 1 1 33.333333%;
+          -webkit-flex: 1 1 33.333333%;
+          flex: 1 1 33.333333%;
+          -webkit-flex-basis: 33.333333%;
+          flex-basis: 33.333333%;
+        }
+      }
+
     </style>
 
     <iron-ajax
@@ -50,17 +147,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       loading="{{loading}}"
       last-response="{{postList}}"></iron-ajax>
 
-    <template is="dom-repeat" items="{{postList.posts}}">
-      <div class="post">
+    <main class="works-list">
+      <template is="dom-repeat" items="{{postList.posts}}">
+
         <a href="#/[[category]]/posts/[[item.slug]]">
-          <iron-image style="width:900px; height:312px;" placeholder="[[item.img_placeholder]]"
-                      sizing="cover" preload fade src="[[item.img]]"
-                      alt="[[item.img_alt]]"></iron-image>
-          <h2>[[item.title]]</h2>
-          <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
+          <figure>
+
+            <iron-image preload fade src="[[item.img]]" alt="[[item.img_alt]]"></iron-image>
+
+            <figcaption>
+              <span>{{item.title}}</span>
+            </figcaption>
+
+          </figure>
         </a>
-      </div>
-    </template>
+      </template>
+    </main>
   </template>
 
   <script>
