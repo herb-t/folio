@@ -22,16 +22,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
 
-<link rel="lazy-import" href="my-view1.html">
-<link rel="lazy-import" href="my-view2.html">
-<link rel="lazy-import" href="my-view3.html">
-<link rel="lazy-import" href="my-view404.html">
 
 <link rel="import" href="blog-pages.html">
-<link rel="lazy-import" href="post-page.html">
-<link rel="lazy-import" href="list-page.html">
 
-<dom-module id="my-app">
+<dom-module id="portfolio-app">
   <template>
 
       <style>
@@ -90,11 +84,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <nav>
         <!-- nav menu -->
         <!-- make sure this is a one way binding or wacky things will happen -->
-        <iron-selector selected="[[categoryData.category]]" attr-for-selected="data-page">
+        <!-- <iron-selector selected="[[categoryData.category]]" attr-for-selected="data-page">
           <a data-page="art" href="#/art/list">Art</a>
           <a data-page="film" href="#/film/list">Film</a>
           <a data-page="photo" href="#/photo/list">Photo</a>
-        </iron-selector>
+        </iron-selector> -->
       </nav>
 
       <main>
@@ -103,8 +97,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class MyApp extends Polymer.Element {
-      static get is() { return 'my-app'; }
+    class PortfolioAppElement extends Polymer.Element {
+      static get is() { return 'portfolio-app'; }
 
       static get properties() {
         return {
@@ -123,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       connectedCallback() {
         super.connectedCallback();
         if (!this.route.path) {
-          this.set('route.path', '/art/list');
+          this.set('route.path', '/works/list');
         }
       }
 
@@ -132,6 +126,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
 
-    window.customElements.define(MyApp.is, MyApp);
+    window.customElements.define(PortfolioAppElement.is, PortfolioAppElement);
   </script>
 </dom-module>

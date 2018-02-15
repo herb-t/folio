@@ -1,14 +1,17 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/portfolio-app.html",
   "fragments": [
-    "src/blog-pages.html",
+    "src/works-page.html",
     "src/post-page.html",
-    "src/list-page.html"
+    "src/list-page.html",
+    "src/about-page.html",
+    "src/contact-page.html"
   ],
   "sources": [
     "src/**/*",
-    "images/**/*"
+    "images/**/*",
+    "data/**/*"
   ],
   "extraDependencies": [
     "manifest.json",

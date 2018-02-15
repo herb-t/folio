@@ -1,7 +1,7 @@
 {
-  "name": "My App",
-  "short_name": "My App",
-  "description": "My App description",
+  "name": "Herb Torres",
+  "short_name": "Herb",
+  "description": "Personal Portfolio",
   "icons": [
     {
       "src": "images/manifest/icon-192x192.png",
