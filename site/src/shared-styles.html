@@ -35,11 +35,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         line-height: 64px;
       }
 
-      h1 {
-        margin: 16px 0;
-        color: #212121;
-        font-size: 22px;
-      }
+      :root {
+				--site-font-family: 'Open Sans', Arial, sans-serif;
+				--white: #FFFFFF;
+				--black: #000;
+				--logo-red: #cf482a;
+				--logo-black: #393b39;
+				--site-max-width: 1120px;
+			}
+			a {
+				-webkit-transition: color 0.3s ease-in-out;
+				   -moz-transition: color 0.3s ease-in-out;
+				    -ms-transition: color 0.3s ease-in-out;
+				     -o-transition: color 0.3s ease-in-out;
+				        transition: color 0.3s ease-in-out;
+			}
+			section,
+			aside {
+				padding: 25px;
+				-webkit-box-sizing: border-box;
+				   -moz-box-sizing: border-box;
+				        box-sizing: border-box;
+			}
+			.l-content-container {
+				width: 100%;
+				max-width: var(--site-max-width);
+				margin: 0 auto;
+			}
+			iron-image {
+			  --iron-image-width: 100%;
+				--iron-image-placeholder: {
+				  background-repeat: no-repeat;
+				  background-position: center center;
+				  -webkit-background-size: cover;
+				       -o-background-size: cover;
+				          background-size: cover;
+				}
+			}
     </style>
   </template>
 </dom-module>
