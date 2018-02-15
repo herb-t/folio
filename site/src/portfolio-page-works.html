@@ -9,6 +9,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+<link rel="import" href="my-icons.html">
+<link rel="import" href="works-page.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="portfolio-page-works">
@@ -21,17 +26,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div class="card">
-      <div class="circle">1 / Home</div>
-      <h1>Works</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+
+    <app-route route="{{route}}" pattern="/:category" data="{{categoryData}}" tail="{{categoryTail}}"></app-route>
+
+    <works-page route="{{categoryTail}}" category="{{categoryData.category}}"></works-page>
+
   </template>
 
   <script>
     class PortfolioPageWorksElement extends Polymer.Element {
       static get is() { return 'portfolio-page-works'; }
+
+      static get properties() {
+        return {
+          route: {
+            type: Object
+          }
+        };
+      }
+
+      static get observers() {
+        return [
+          '_updateScroll(route)',
+        ];
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        if (!this.route.path) {
+          this.set('route.path', '/works/list');
+        }
+      }
+
+      _updateScroll() {
+        window.scroll(0, 0);
+      }
     }
 
     window.customElements.define(PortfolioPageWorksElement.is, PortfolioPageWorksElement);
