@@ -33,6 +33,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
 
+        --portfolio-grey: #969696;
+        --portfolio-red: #cd4829;
+
         display: block;
       }
 
@@ -41,12 +44,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       app-header {
-        color: #fff;
-        background-color: var(--app-primary-color);
+        color: var(--portfolio-grey);
+        background-color: rgba(255, 255, 255, 0);
       }
 
       app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
+        --paper-icon-button-ink-color: var(--portfolio-red);
       }
 
       .header {
@@ -61,7 +64,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         padding: 0 16px;
         text-decoration: none;
-        color: var(--app-secondary-color);
+        color: var(--portfolio-grey);
         line-height: 40px;
       }
 
@@ -73,12 +76,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         padding: 0 16px;
         text-decoration: none;
-        color: var(--app-secondary-color);
+        color: var(--portfolio-grey);
         line-height: 40px;
       }
 
       .drawer__list a.iron-selected {
-        color: black;
+        color: color: var(--portfolio-red);;
         font-weight: bold;
       }
 
