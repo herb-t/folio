@@ -22,9 +22,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
 
-<link rel="lazy-import" href="porfolio-page-works.html">
-<link rel="lazy-import" href="porfolio-page-about.html">
-<link rel="lazy-import" href="porfolio-page-contact.html">
+<link rel="lazy-import" href="portfolio-page-works.html">
+<link rel="lazy-import" href="portfolio-page-about.html">
+<link rel="lazy-import" href="portfolio-page-contact.html">
 
 <dom-module id="portfolio-app">
   <template>
@@ -45,7 +45,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       app-header {
         color: var(--portfolio-grey);
-        background-color: rgba(255, 255, 255, 0);
+        background-color: rgba(255, 255, 255, 1);
       }
 
       app-header paper-icon-button {
@@ -126,7 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header reveals effects="waterfall" class="header">
+        <app-header reveals slot="header" effects="waterfall" class="header">
           <app-toolbar>
             <div main-title>
               <div class="title">
