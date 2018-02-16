@@ -2,14 +2,14 @@
   "posts": [
     {
       "title": "YouTube Rewind 2016",
-      "slug": "seventh-post",
+      "slug": "rewind2016",
       "img": "images/thumbnails/logo-rewind-16.png",
       "img_alt": "YouTube Rewind Logo",
       "img_placeholder": ""
     },
     {
       "title": "Artifact",
-      "slug": "eighth-post",
+      "slug": "artifact",
       "img": "images/thumbnails/memory.png",
       "img_alt": "Artifact Holiday Memory",
       "img_placeholder": ""
