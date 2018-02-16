@@ -1,4 +1,5 @@
-# Polymer App Toolbox - Starter Kit
+# Portfolio 2018
+## Polymer Starter Kit
 
 [![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)
 
