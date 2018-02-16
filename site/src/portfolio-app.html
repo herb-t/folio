@@ -130,7 +130,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </app-drawer>
 
       <!-- Main content -->
-      <app-header-layout has-scrolling-region>
+      <app-header-layout>
 
         <app-header reveals slot="header" effects="waterfall" class="header">
           <app-toolbar>
@@ -201,6 +201,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <portfolio-page-about name="about"></portfolio-page-about>
           <portfolio-page-contact name="contact"></portfolio-page-contact>
         </iron-pages>
+
       </app-header-layout>
     </app-drawer-layout>
   </template>
@@ -239,6 +240,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
+        window.scrollTo(0, 0);
       }
 
       _pageChanged(page) {
@@ -254,6 +256,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _redirectHome() {
         this.page = 'works';
       }
+
     }
 
     window.customElements.define(PortfolioAppElement.is, PortfolioAppElement);
