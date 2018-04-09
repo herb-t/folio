@@ -41,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				--black: #000;
 				--logo-red: #cf482a;
 				--logo-black: #393b39;
-				--site-max-width: 1120px;
+				--site-max-width: 1280px;
 			}
 			a {
 				-webkit-transition: color 0.3s ease-in-out;
@@ -50,9 +50,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				     -o-transition: color 0.3s ease-in-out;
 				        transition: color 0.3s ease-in-out;
 			}
+			.l-content-container,
 			section,
 			aside {
-				padding: 25px;
 				-webkit-box-sizing: border-box;
 				   -moz-box-sizing: border-box;
 				        box-sizing: border-box;
@@ -61,6 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				width: 100%;
 				max-width: var(--site-max-width);
 				margin: 0 auto;
+				padding: 0 16px;
 			}
 			iron-image {
 			  --iron-image-width: 100%;
@@ -70,6 +71,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				  -webkit-background-size: cover;
 				       -o-background-size: cover;
 				          background-size: cover;
+				}
+			}
+
+			@media screen and (min-width: 767px) {
+				.l-content-container {
+					padding: 0 24px;
 				}
 			}
     </style>

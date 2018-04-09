@@ -24,6 +24,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
 
+      :host .l-content-container {
+        max-width: 1120px;
+      }
+
       /* .post {
         position: relative;
         margin-bottom: 100px;
@@ -63,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         -webkit-flex-basis: 100%;
         flex-basis: 100%;
       }
-      iron-image {
+      img {
         -webkit-transition: opacity 0.3s ease-in-out;
            -moz-transition: opacity 0.3s ease-in-out;
             -ms-transition: opacity 0.3s ease-in-out;
@@ -71,7 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 transition: opacity 0.3s ease-in-out;
 
       }
-      a:hover > figure iron-image {
+      a:hover > figure img {
         opacity: 0.15;
       }
       a:hover > figure span {
@@ -82,14 +86,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 0;
         position: relative;
       }
+
       figure img {
         width: 100%;
-        max-width: 100%;
+        max-width: 325px;
         height: auto;
       }
+      /*
       figure iron-image {
         --iron-image-width: 100%;
       }
+      */
       figcaption {
         position: absolute;
         left: 50%;
@@ -150,7 +157,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <a href="#/[[category]]/posts/[[item.slug]]">
           <figure>
 
-            <iron-image preload fade src="[[item.img]]" alt="[[item.img_alt]]"></iron-image>
+            <!-- <iron-image preload fade src="[[item.img]]" alt="[[item.img_alt]]"></iron-image> -->
+            <img src="[[item.img]]" alt="[[item.img_alt]]">
 
             <figcaption>
               <span>{{item.title}}</span>
