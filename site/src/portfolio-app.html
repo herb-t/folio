@@ -239,6 +239,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+          isMobile: {
+            type: Boolean,
+            value: () => {
+              var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+              var isAndroid = /(android)/i.test(navigator.userAgent);
+              if (iOS === true || isAndroid === true) {
+                return true;
+              }
+              return false;
+            }
+          },
+          isIOS: {
+            value: () => {
+              var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+              if (iOS === true) {
+                return true;
+              }
+              return false;
+            }
+          },
+          isIOS11: {
+            value: () => {
+              var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+              var v11 = /OS\s11/.test(navigator.userAgent);
+              if (iOS && v11) {
+                return true;
+              }
+              return false;
+            }
+          }
         };
       }
 
