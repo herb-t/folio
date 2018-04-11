@@ -1,0 +1,58 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
+
+<dom-module id="portfolio-loader">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 1000;
+      }
+      
+      .container {
+        @apply --layout-fit;
+        pointer-events: none;
+        @apply --layout-horizontal;
+        @apply --layout-center-center;
+      }
+
+    </style>
+
+    <div class="container" active="[[active]]">
+      <paper-spinner-lite id="spinner" class="thick" active="[[active]]"></paper-spinner-lite>
+    </div>
+  </template>
+  <script>
+    class PortfolioLoaderElement extends Polymer.Element {
+      static get is() {
+        return 'portfolio-loader';
+      }
+      static get properties() {
+        return {
+          active: {
+            type: Boolean,
+            value: true,
+            reflectToAttribute: true
+          }
+        }
+      }
+
+      constructor() {
+        super();
+        window.portfolioLoader = this;
+      }
+    }
+    window.customElements.define(PortfolioLoaderElement.is, PortfolioLoaderElement);
+  </script>
+</dom-module>

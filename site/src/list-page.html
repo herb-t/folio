@@ -11,6 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="portfolio-loader.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="list-page">
@@ -18,7 +19,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="shared-styles">
       :host {
         display: none;
-        margin-bottom: 32px;
       }
 
       :host([active]) {
@@ -55,6 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .works-list {
         @apply --layout-horizontal;
         @apply --layout-wrap;
+        margin-bottom: 32px;
       }
 
       a {
@@ -123,6 +124,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 transition: opacity 0.3s ease-in-out;
       }
 
+      #list__footer {
+        opacity: 0;
+        visibility: hidden;
+      }
+
       @media (min-width: 600px) {
         a {
           -ms-flex: 1 1 50%;
@@ -150,8 +156,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       url="[[_computeURL(category)]]"
       handle-as="json"
       loading="{{loading}}"
+      on-response="_onResponse"
       last-response="{{postList}}"></iron-ajax>
-
+    
     <main class="l-content-container works-list">
       <template is="dom-repeat" items="{{postList.posts}}">
 
@@ -169,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </a>
       </template>
     </main>
-
+    <portfolio-footer id="list__footer"></portfolio-footer>
   </template>
 
   <script>
@@ -200,9 +207,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       connectedCallback() {
         super.connectedCallback();
+      }
 
-        if (this.postList) {
-          console.log('postlist ', this.postList)
+      _onResponse() {
+        if (this.postList.posts.length > 6) {    
+          TweenMax.to(this.$.list__footer, 0.8, {autoAlpha: 1, ease: Power4.easeOut});
         }
       }
 
