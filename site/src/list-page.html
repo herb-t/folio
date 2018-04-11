@@ -159,10 +159,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-response="_onResponse"
       last-response="{{postList}}"></iron-ajax>
     
+    <portfolio-loader id="list__loader"></portfolio-loader>
     <main class="l-content-container works-list">
       <template is="dom-repeat" items="{{postList.posts}}">
 
-        <a href="#/[[category]]/posts/[[item.slug]]">
+        <a href="#/[[category]]/posts/[[item.slug]]" class="list__card">
           <figure>
 
             <!-- <iron-image preload fade src="[[item.img]]" alt="[[item.img_alt]]"></iron-image> -->
@@ -193,6 +194,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           postList: {
             type: Array
           },
+          _loaded: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
           loading: {
             type: Boolean,
             value: false,
@@ -210,8 +216,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _onResponse() {
-        if (this.postList.posts.length > 6) {    
-          TweenMax.to(this.$.list__footer, 0.8, {autoAlpha: 1, ease: Power4.easeOut});
+
+        
+        if (this.postList.posts.length > 8) {
+          //let cards = Array.prototype.slice.call(this.queryAllEffectiveChildren('.list__card'));
+          //console.log(cards)
+          TweenMax.to(this.$.list__loader, 0.4, {delay: 0.3, autoAlpha: 0, ease: Power1.easeOut});
+          TweenMax.to(this.$.list__footer, 0.6, {autoAlpha: 1, ease: Power4.easeOut});
+          //TweenMax.staggerTo(cards, 0.8, {delay: 1, autoAlpha: 0, y: 20, ease: Power4.easeOut}, 0.05);
         }
       }
 

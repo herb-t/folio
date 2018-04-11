@@ -1,7 +1,7 @@
 {
   "title": "Artifact Holiday Memory Card",
   "link": "http://www.artifactdesign.com/holiday-memory/",
-  "img": "images/preview/preview-artifact.jpg",
+  "img": ["images/preview/preview-artifact.jpg"],
   "img_alt": "Artifact",
   "has_video": false,
   "video": "",

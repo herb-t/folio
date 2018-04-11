@@ -1,7 +1,7 @@
 {
   "title": "YouTube Rewind 2016",
   "link": "https://rewind2016.withyoutube.com/",
-  "img": "images/preview/preview-rewind.jpg",
+  "img": ["images/preview/preview-rewind.jpg", "images/preview/preview-rewind.jpg"],
   "img_alt": "YouTube Rewind",
   "has_video": true,
   "video": "_GuOjXYl5ew",

@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="portfolio-loader.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="post-page">
@@ -176,6 +177,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       url="[[_computeURL(post)]]"
       handle-as="json"
       loading="{{loading}}"
+      on-response="_onResponse"
       last-response="{{postContent}}"></iron-ajax>
 
     <!-- <a href="#/works/list">Back</a> -->
@@ -188,7 +190,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   alt="[[postContent.img_alt]]"></iron-image>
       <p>[[postContent.body_text]]</p>
     </article> -->
-
+    <portfolio-loader id="post__loader"></portfolio-loader>
     <div class="l-content-container">
       <div class="l-project-page">
 
@@ -215,7 +217,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
 
         <div id="content">
-          <img src="[[postContent.img]]" alt="[[postContent.img_alt]]">
+          <template is="dom-repeat" items="{{postContent.img}}">
+            <img src="[[item]]" alt="[[postContent.img_alt]]">
+          </template>
+
+          <template is="dom-if" if="[[_hasVideo(postContent.video)]]">
+            <iframe width="100%" src="https://www.youtube.com/embed/[[postContent.video]]" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </template>
+          <!-- <img src="[[postContent.img]]" alt="[[postContent.img_alt]]"> -->
           <!--
           <iron-image style="width:900px; height:512px;" placeholder="[[postContent.img_placeholder]]"
                       sizing="cover" preload fade src="[[postContent.img]]"
@@ -225,6 +234,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       </div>
     </div>
+
+    <portfolio-footer id="post__footer"></portfolio-footer>
     
   </template>
 
@@ -248,7 +259,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _computeURL(post) {
+        TweenMax.set(this.$.post__loader, {autoAlpha: 1});
         return `data/posts/${post}.json`;
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        console.log('connectedCallback()')
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        console.log('disconnectedCallback()')
+      }
+
+      _onResponse() {
+        console.log('post-page')
+        console.log(this.active)
+        TweenMax.to(this.$.post__loader, 0.4, {delay: 0.2, autoAlpha: 0, ease: Power1.easeOut});
+        TweenMax.to(this.$.post__footer, 0.6, {autoAlpha: 1, ease: Power4.easeOut});
+      }
+
+      _hasVideo(data) {
+        if(data.length > 0) {
+          return true
+        }
       }
 
     }

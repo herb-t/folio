@@ -296,10 +296,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.drawer.close();
         }
 
-        //TweenMax.fromTo(this.$.pages, 0.6,
-        //  {autoAlpha: 0},
-        //  {autoAlpha: 1, ease: Power1.easeOut}
+        //TweenMax.fromTo(this.$.pages, 0.8,
+        //  {autoAlpha: 0, ease: Power4.easeInOut},
+        //  {autoAlpha: 1, ease: Power4.easeOut}
         //)
+
+        TweenMax.to(window, 0.6, {scrollTo: 0, ease: Power4.easeOut});
 
         // document.body.scrollTop = document.documentElement.scrollTop = 0;
       }
