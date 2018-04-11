@@ -301,6 +301,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         //  {autoAlpha: 1, ease: Power4.easeOut}
         //)
 
+        console.log('_routePageChanged(page)');
+
         TweenMax.to(window, 0.6, {scrollTo: 0, ease: Power4.easeOut});
 
         // document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -314,6 +316,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             null,
             this._redirectHome.bind(this),
             true);
+
+        console.log('_pageChanged(page)');
       }
 
       _redirectHome() {

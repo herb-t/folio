@@ -54,11 +54,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         super.connectedCallback();
         if (!this.route.path) {
           this.set('route.path', '/works/list');
+          console.log('set path')
         }
       }
 
       _updateScroll() {
-        window.scrollTo(0, 0);
+        TweenMax.to(window, 0.6, {scrollTo: 0, ease: Power4.easeOut});
       }
     }
 
