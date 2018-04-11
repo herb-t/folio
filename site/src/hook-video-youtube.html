@@ -1,0 +1,736 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/utils/async.html">
+<link rel="import" href="hook-youtube-api.html">
+
+
+<dom-module id="hook-video-youtube">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+      }
+
+      .youtube__container {
+        width: 100%;
+        height: 100%;
+        @apply --hook-video-container;
+      }
+
+      .youtube__iframe {
+        width: 100%;
+        height: 100%;
+        @apply --hook-video-iframe;
+      }
+
+      .youtube__iframe--unstarted {
+      }
+
+      .youtube__iframe--ended {
+      }
+
+      .youtube__iframe--buffering {
+      }
+
+      .youtube__iframe--playing {
+      }
+
+      .thumbnail {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        cursor: pointer;
+        z-index: 1;
+        background-color: #000;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        @apply --hook-video-thumbnail;
+      }
+      
+      .thumbnail--hovering {
+        @apply --hook-video-thumbnail-hovering;
+      }
+
+      .thumbnail--notclickable {
+        pointer-events: none;
+      }
+
+      .thumbnail__icon {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 68px;
+        height: 48px;
+        margin-left: -34px;
+        margin-top: -24px;
+        z-index: 1;
+        -moz-transition: fill .1s cubic-bezier(0.0, 0.0, 0.2, 1), fill-opacity .1s cubic-bezier(0.0, 0.0, 0.2, 1);
+        -webkit-transition: fill .1s cubic-bezier(0.0, 0.0, 0.2, 1), fill-opacity .1s cubic-bezier(0.0, 0.0, 0.2, 1);
+        transition: fill .1s cubic-bezier(0.0, 0.0, 0.2, 1), fill-opacity .1s cubic-bezier(0.0, 0.0, 0.2, 1);
+      }
+
+      .thumbnail__icon--hovering .ytp-large-play-button-bg {
+        fill: #f00;
+        fill-opacity: 1;
+      }
+
+      .thumbnail--paused {
+        @apply --hook-video-thumbnail-paused;
+      }
+      
+      .thumbnail--ended {
+        @apply --hook-video-thumbnail-ended;
+      }
+
+      .thumbnail--playing {
+        @apply --hook-video-thumbnail-playing;
+      }
+
+      .thumbnail--unstarted {
+        display: block;
+        @apply --hook-video-thumbnail-unstarted;
+      }
+
+    </style>
+    <hook-youtube-api loaded="{{apiReady}}"></hook-youtube-api>
+    <div class$="thumbnail [[computeClass(playing, 'thumbnail--playing')]] [[computeClass(paused, 'thumbnail--paused')]] [[computeClass(unstarted, 'thumbnail--unstarted')]] [[computeClass(ended, 'thumbnail--ended')]] [[computeClass(hovering, 'thumbnail--hovering')]]" style$="[[computeThumbnailStyle(thumbnail)]]">
+      <svg class$="thumbnail__icon [[computeClass(hovering, 'thumbnail__icon--hovering')]]" height="100%" version="1.1" viewBox="0 0 68 48" width="100%">
+        <path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#212121" fill-opacity="0.8"></path>
+        <path d="M 45,24 27,14 27,34" fill="#fff"></path>
+      </svg>
+    </div>
+    <div id="youtube-container" class$="youtube__container [[computeClass(playing, 'youtube__iframe--playing')]] [[computeClass(paused, 'youtube__iframe--paused')]]">
+      <div id="player" class="youtube__iframe"></div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `hook-video`
+     * Polymer 2 video element for playing YouTube and HTML5 videos.
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class HookVideoYouTube extends Polymer.Element {
+      static get is() { return 'hook-video-youtube'; }
+      static get properties() {
+        return {
+          debug: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          apiReady: {
+            type: Boolean,
+            notify: true,
+            observer: 'apiReadyChanged'
+          },
+          playerReady: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
+          src: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true
+          },
+          nopreload: {
+            type: Boolean,
+            notify: true,
+            value: false
+          },
+          waitingToPlay: {
+            type: Boolean,
+            value: false
+          },
+          state: {
+            type: Number,
+            notify: true
+          },
+          thumbnail: {
+            type: String,
+            notify: true,
+            value: ''
+          },
+          unstarted: {
+            type: Boolean,
+            notify: true,
+            readOnly: true,
+            value: true,
+            computed: 'computeUnstarted(state)'
+          },
+          buffering: {
+            type: Boolean,
+            notify: true,
+            readOnly: true,
+            value: false,
+            computed: 'computePlaying(state)'
+          },
+          playing: {
+            type: Boolean,
+            notify: true,
+            readOnly: true,
+            value: false,
+            computed: 'computePlaying(state)'
+          },
+          notplaying: {
+            type: Boolean,
+            notify: true,
+            readOnly: true,
+            value: true,
+            computed: 'computeNotPlaying(state)'
+          },
+          paused: {
+            type: Boolean,
+            notify: true,
+            readOnly: true,
+            value: false,
+            computed: 'computePaused(state)'
+          },
+          ended: {
+            type: Boolean,
+            notify: true,
+            readOnly: true,
+            value: false,
+            computed: 'computeEnded(state)'
+          },
+          duration: {
+            type: Number,
+            notify: true,
+            readOnly: true,
+            computed: 'computeDuration(playing)'
+          },
+          hovering: {
+            type: Boolean,
+            notify: true,
+            readOnly: true,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_hoveringChanged'
+          },
+          currentTime: {
+            type:Number,
+            notify: true
+          },
+          /**
+          * The fraction of the bytes that have been loaded for the current video, in the range [0-1].
+          */
+          fractionLoaded: {
+            type: Number,
+            value: 0,
+            notify: true
+          },
+
+          /**
+          * If the player stops, reset and destroy the player after a period of no interaction.
+          */
+          autoTimeout: {
+            type: Boolean,
+            value: true
+          },
+
+          /**
+          * The timeout duration before the player is destroyed when there is no interaction.
+          */
+          timeoutDuration: {
+            type: Number,
+            value: 5000
+          },
+
+          /**
+          * Returns the player's current volume, an integer between 0 and 100.
+          * Note that `getVolume()` will return the volume even if the player is muted.
+          */
+          volume: {
+            type: Number,
+            value: 100,
+            notify: true
+          },
+
+          _vars: {
+            type:Object,
+            computed: '_computeVars(vars, ytColor, ytCcloadpolicy, ytControls, ytDisablekb, ytIvLoadPolicy, ytLoop, ytModestbranding, ytOrigin, ytPlaysinline, ytRel, ytShowinfo, ytStart)'
+          },
+
+          /**
+          * Passed into the YouTube constructor. This object gets merged on top of the properties. It takes precedence.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          vars: {
+            type: Object,
+            notify: true,
+            value: () => { 
+              return {}; 
+            }
+          },
+
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytColor: {
+            type: String
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytCcloadpolicy: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytControls: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytDisablekb: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytIvLoadPolicy: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytLoop: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytModestbranding: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytOrigin: {
+            type: String,
+            value: () => { return window.location.protocol + '//' + window.location.host; }
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytPlaysinline: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytRel: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytShowinfo: {
+            type: Number
+          },
+          /**
+          * Passed into the YouTube constructor.
+          * @see {@link https://developers.google.com/youtube/player_parameters#Parameters|YouTube Player Parameters}
+          */
+          ytStart: {
+            type: Number
+          }
+
+        };
+      }
+
+      static get observers() {
+        return ['srcChanged(src, apiReady, nopreload)'];
+      }
+
+      constructor() {
+        super();
+        this.__onPlayerError = this._onPlayerError.bind(this);
+        this.__onPlayerReady = this._onPlayerReady.bind(this);
+        this.__onPlayerStateChange = this._onPlayerStateChange.bind(this);
+        this.__playerClicked = this._playerClicked.bind(this);
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+
+        this.addEventListener('click', this.__playerClicked);
+
+        if(this.nopreload) {
+
+          this.addEventListener('mouseenter', () => { 
+            if(this.debug) { 
+              console.log('hook-video-youtube.hovering'); 
+            } 
+            this._setHovering(true); 
+          }); 
+          this.addEventListener('mouseleave', () => { 
+            this._setHovering(false); 
+          }); 
+  
+        }
+      }
+
+      /**
+      * Clean up the underlying Player `<iframe>` when we're removed from the DOM.
+      */
+      disconnectedCallback() {
+        this._destroyPlayer();
+      }
+
+      _playerClicked(e) {
+        if(this.debug) {
+          console.log('hook-video-youtube._playerClicked()');
+        }
+        this.play();
+      }
+
+      srcChanged(src, apiReady, nopreload) {
+        if(this.debug) {
+          console.log('hook-video-youtube.srcChanged()', src, apiReady, nopreload);
+        }
+        if(!apiReady || nopreload) {
+          return;
+        }
+        this._destroyPlayer();
+        this._createPlayer();
+      }
+
+      _destroyPlayer() {
+        if(this.debug) {
+          console.log('hook-video-youtube._destroyPlayer()');
+        }
+        if(this.player) {
+          this.player.destroy();
+          this.player = null;
+        }
+        this.playerReady = false;
+      }
+
+      _createPlayer() {
+        if(this.debug) {
+          console.log('hook-video-youtube._createPlayer()');
+        }
+        this.playerReady = false;
+        this.player = new YT.Player(this.shadowRoot.querySelector('#player'), {
+          videoId: this.src,
+          playerVars: this._vars,
+          events: {
+            onError: this.__onPlayerError,
+            onReady: this.__onPlayerReady,
+            onStateChange: this.__onPlayerStateChange
+          }
+        });
+      }
+
+      _onPlayerError(e) {
+        if(this.debug) {
+          console.error('hook-video-youtube.__onPlayerError()', e);
+        }
+      }
+
+      _onPlayerReady() {
+        if(this.debug) {
+          console.log('hook-video-youtube._onPlayerReady()');
+        }
+
+        if(!this.nopreload) {
+          this.addEventListener('mouseenter', () => { 
+            if(this.debug) { 
+              console.log('hook-video-youtube.hovering'); 
+            } 
+            this._setHovering(true); 
+          }); 
+          this.addEventListener('mouseleave', () => { 
+            this._setHovering(false); 
+          }); 
+        }
+
+        this.playerReady = true;
+        if(this.waitingToPlay) {
+          this.play();
+          this.waitingToPlay = false;
+        }
+      }
+
+      _onPlayerStateChange(e) {
+        if(this.debug) {
+          console.log('hook-video-youtube._onPlayerStateChange()', e.data);
+        }
+        this.state = e.data;
+
+        if (this.playing && !this.__updatePlaybackStatsInterval) {
+          this.__updatePlaybackStatsInterval = setInterval(this._updatePlaybackStats.bind(this), 1000);
+        }
+        else {
+          if(this.__updatePlaybackStatsInterval) {
+            clearInterval(this.__updatePlaybackStatsInterval);
+            this.__updatePlaybackStatsInterval = undefined;
+          }
+        }
+      }
+
+      apiReadyChanged() {
+        if(this.debug) {
+          console.log('hook-video-youtube.apiReadyChanged()', this.apiReady);
+        }
+        if(this.waitingToPlay) {
+          this.play();
+        }
+      }
+
+      _updatePlaybackStats() {
+        if(!this.playerReady || !this.player || !this.player.getCurrentTime) {
+          return;
+        }
+        this.currentTime = Math.round(this.player.getCurrentTime());
+        this.fractionLoaded = this.player.getVideoLoadedFraction();
+        this.volume = this.player.getVolume();
+      }
+
+      computeUnstarted(state) {
+        if(state === -1 || state === 5) {
+          if(this.debug) {
+            console.log('hook-video-youtube.UNSTARTED');
+          }
+          return true;
+        }
+        return false;
+      }
+
+      computeBuffering() {
+        if(this.state === YT.PlayerState.BUFFERING) {
+          if(this.debug) {
+            console.log('hook-video-youtube.BUFFERING');
+          }
+          this._cancelTimeout();
+          return true;
+        }
+        return false;
+      }
+      computePlaying() {
+        if(this.state === YT.PlayerState.PLAYING) {
+          if(this.debug) {
+            console.log('hook-video-youtube.PLAYING');
+          }
+          return true;
+        }
+        return false;
+      }
+      computeNotPlaying() {
+        if(this.state !== YT.PlayerState.PLAYING) {
+          if(this.debug) {
+            console.log('hook-video-youtube.NOT PLAYING');
+          }
+          return true;
+        }
+        this._cancelTimeout();
+        return false;
+      }
+      computePaused() {
+        if(this.state === YT.PlayerState.PAUSED) {
+          if(this.debug) {
+            console.log('hook-video-youtube.PAUSED');
+          }
+          this._startTimeout();
+          return true;
+        }
+        return false;
+      }
+
+      computeEnded() {
+        if(this.state === YT.PlayerState.ENDED) {
+          if(this.debug) {
+            console.log('hook-video-youtube.ENDED');
+          }
+          return true;
+        }
+        return false;
+      }
+
+      computeDuration(playing) {
+        if(playing) {
+          if(this.debug) {
+            console.log('hook-video-youtube.DURATION', this.player.getDuration());
+          }
+          return this.player.getDuration();
+        }
+        return undefined;
+      }
+
+      computeClass(boolVal, classVal) {
+        if(boolVal) {
+          return classVal;
+        }
+        return '';
+      }
+
+      computeThumbnailStyle(thumbnail) {
+        if(!thumbnail) {
+          return "background-color: transparent; display: none;";
+        }
+        return "background-image: url(" + thumbnail + ");";
+      }
+
+      play() {
+        if(this.debug) {
+          console.log('hook-video-youtube.play()');
+        }
+        if(!this.apiReady) {
+          this.waitingToPlay = true;
+          return;
+        }
+        if(this.nopreload && !this.playerReady) {
+          this.waitingToPlay = true;
+          this._destroyPlayer();
+          this._createPlayer();
+        }
+        else {
+          if(!this.playerReady) {
+            this.waitingToPlay = true;
+          }
+          else {
+            this.player.playVideo();
+          }
+        }
+      }
+
+      pause() {
+        if(this.debug) {
+          console.log('hook-video-youtube.pause()');
+        }
+        if(this.player && this.playerReady) {
+          this.player.pauseVideo();
+          this._cancelTimeout();
+        }
+      }
+
+      stop() {
+        if(this.debug) {
+          console.log('hook-video-youtube.stop()');
+        }
+        if(this.player && (this.playing || this.paused)  && this.playerReady) {
+          this.player.stopVideo();
+          this._cancelTimeout();
+        }
+      }
+
+      mute() {
+        if(this.debug) {
+          console.log('hook-video-youtube.mute()');
+        }
+        if(this.player && this.playerReady) {
+          this.player.mute();
+        }
+      }
+
+      unmute() {
+        if(this.debug) {
+          console.log('hook-video-youtube.unmute()');
+        }
+        if(this.player && this.playerReady) {
+          this.player.unmute();
+        }
+      }
+
+      _idleTimeout() {
+        console.log('hook-video-youtube._idleTimeout()');
+        this.stop();
+        if(this.nopreload) {
+          this._destroyPlayer();
+          this.state = -1;
+        }
+      }
+
+      /**
+      * Skips ahead (or back) to the specified number of seconds.
+      *
+      * @method seekTo
+      * @param {number} seconds Number of seconds to seek to.
+      */
+      seekTo(seconds) {
+        if(this.debug) {
+          console.log('hook-video-youtube.seekTo()', seconds);
+        }
+        if (this.player && this.player.seekTo && this.playerReady) {
+          this.player.seekTo(seconds, true);
+          // Explicitly call _updatePlaybackStats() to ensure that the new playback info is
+          // reflected in the bound attributes.
+          // The 100ms delay is somewhat arbitrary, but the YouTube player does need time to
+          // update its internal state following the call to player.seekTo().
+          Polymer.Async.microTask.run(() => {
+            this._updatePlaybackStats();
+          });
+        }
+      }
+
+      _startTimeout() {
+        if(this.autoTimeout && this.playerReady) {
+          this._debounceJob = Polymer.Debouncer.debounce(this._debounceJob, Polymer.Async.timeOut.after(this.timeoutDuration), () => { this._idleTimeout(); });
+        }
+      }
+
+      _cancelTimeout() {
+        if(this._debounceJob) {
+          this._debounceJob.cancel();
+          this._debounceJob = null;
+        }
+      }
+
+      _hoveringChanged(hovering) {
+        if(this.hovering) {
+          this._cancelTimeout();
+        }
+        else {
+          if(this.unstarted || this.paused || this.ended) {
+            this._startTimeout();
+          }
+        }
+      }
+
+      _computeVars(vars, ytColor, ytCcloadpolicy, ytControls, ytDisablekb, ytIvLoadPolicy, ytLoop, ytModestbranding, ytOrigin, ytPlaysinline, ytRel, ytShowinfo, ytStart) {
+        var obj = {
+          cc_load_policy: ytCcloadpolicy,
+          color: ytColor,
+          controls: ytControls,
+          disablekb: ytDisablekb,
+          iv_load_policy: ytIvLoadPolicy,
+          loop: ytLoop,
+          modestbranding: ytModestbranding,
+          origin: ytOrigin,
+          playsinline: ytPlaysinline,
+          rel: ytRel,
+          showinfo: ytShowinfo,
+          start: ytStart
+        };
+        Object.assign(obj, vars);
+        return obj;
+      }
+
+
+    }
+
+    window.customElements.define(HookVideoYouTube.is, HookVideoYouTube);
+  </script>
+</dom-module>

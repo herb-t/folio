@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="hook-video-youtube.html">
 <link rel="import" href="portfolio-loader.html">
 <link rel="import" href="shared-styles.html">
 
@@ -21,6 +22,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       :host([active]) {
         display: block;
+      }
+
+      :host .l-content-container {
+        margin-bottom: 24px; 
       }
 /*
       p {
@@ -142,7 +147,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 2px;
         vertical-align: middle;
       }
+
+      .post__img {
+        margin-bottom: 24px; 
+      }
+      
+      .video-container {
+        position: relative;
+        height: 0;
+        padding-bottom: 56.25%;
+        margin-bottom: 24px;
+      }
+      hook-video-youtube {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
       @media screen and (max-width: 767px) {
+        :host .l-content-container {
+          margin-bottom: 16px; 
+        }
         .l-project-page {
           -webkit-flex-direction: column-reverse;
               -ms-flex-direction: column-reverse;
@@ -168,6 +195,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         h1 {
           margin-top: 0;
+        }
+
+        .post__img,
+        .video-container {
+          margin-bottom: 16px; 
         }
       }
     </style>
@@ -217,12 +249,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
 
         <div id="content">
-          <template is="dom-repeat" items="{{postContent.img}}">
-            <img src="[[item]]" alt="[[postContent.img_alt]]">
+          <template is="dom-if" if="[[_hasVideo(postContent.video)]]"> 
+            <div class="video-container">
+              <template is="dom-repeat" items="{{postContent.video}}">
+                <hook-video-youtube
+                  class="hook-video-yt"
+                  id="hookVideoYt"
+                  chromeless
+                  yt-controls="0"
+                  yt-iv-load-policy="3"
+                  yt-modest-branding="1"
+                  yt-playsinline="1"
+                  yt-rel="0"
+                  yt-showinfo="0"
+                  src="[[item]]">
+                </hook-video-youtube>
+              </template>
+            </div>
           </template>
 
-          <template is="dom-if" if="[[_hasVideo(postContent.video)]]">
-            <iframe width="100%" src="https://www.youtube.com/embed/[[postContent.video]]" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <template is="dom-repeat" items="{{postContent.img}}">
+            <img src="[[item]]" alt="[[postContent.img_alt]]" class="post__img">
           </template>
           <!-- <img src="[[postContent.img]]" alt="[[postContent.img_alt]]"> -->
           <!--

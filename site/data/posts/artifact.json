@@ -3,8 +3,7 @@
   "link": "http://www.artifactdesign.com/holiday-memory/",
   "img": ["images/preview/preview-artifact.jpg"],
   "img_alt": "Artifact",
-  "has_video": false,
-  "video": "",
+  "video": [],
   "img_placeholder": "",
   "copy_text": "While working as an intern at Artifact Design in Atlanta, I developed their anual holiday card. The designers and animators came up with a memory game concept where an animation would fire whenever you get a match. This is my first project I worked on that was deployed live to the web."
 }
